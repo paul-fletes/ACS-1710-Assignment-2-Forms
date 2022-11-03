@@ -35,7 +35,7 @@ def show_froyo_results():
     """Shows the user what they ordered from the previous page."""
     users_froyo_flavor = request.args.get('flavor')
     users_froto_toppings = request.args.get('toppings')
-    return f'You ordered {users_froyo_flavor} flavored Fro-Yo topped with {users_froto_toppings}!'
+    return f'You ordered {users_froyo_flavor} flavored Fro-Yo with toppings {users_froto_toppings}!'
 
 
 @app.route('/favorites')
