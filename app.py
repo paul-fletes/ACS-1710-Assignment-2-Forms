@@ -67,13 +67,20 @@ def favorites_results():
 def secret_message():
     """Shows the user a form to collect a secret message. Sends the result via
     the POST method to keep it a secret!"""
-    pass
+    return """
+    <form action='/message_results' method='POST'>
+        What is your message?<br/>
+        <input type='text' name='message'><br/>
+        <input type='submit' value='Submit'>
+    </form>
+    """
 
 
 @app.route('/message_results', methods=['POST'])
 def message_results():
     """Shows the user their message, with the letters in sorted order."""
-    pass
+    secret_message = request.form.get('message')
+    return f'Here\'s your secret message! {sort_letters(secret_message)}'
 
 
 @app.route('/calculator')
@@ -98,7 +105,26 @@ def calculator():
 @app.route('/calculator_results')
 def calculator_results():
     """Shows the user the result of their calculation."""
-    pass
+    input_number_1 = int(request.args.get('operand1'))
+    input_number_2 = int(request.args.get('operand'))
+    operation = request.args.get('operation')
+    if operation == 'add':
+        result = input_number_1 + input_number_2
+    elif operation == 'subtract':
+        result = input_number_1 - input_number_2
+    elif operation == 'multiply':
+        result = input_number_1 * input_number_2
+    elif operation == 'divide':
+        result = input_number_1 / input_number_2
+
+    context = {
+        'operand1': input_number_1,
+        'operand2': input_number_2,
+        'operation': operation,
+        'result': result,
+    }
+
+    return render_template('calculator_results.html', **context)
 
 
 HOROSCOPE_PERSONALITIES = {
@@ -128,19 +154,21 @@ def horoscope_results():
     """Shows the user the result for their chosen horoscope."""
 
     # TODO: Get the sign the user entered in the form, based on their birthday
-    horoscope_sign = ''
+    users_name = request.args.get('users_name')
+    horoscope_sign = request.args.get('horoscope_sign')
 
     # TODO: Look up the user's personality in the HOROSCOPE_PERSONALITIES
     # dictionary based on what the user entered
-    users_personality = ''
+    users_personality = HOROSCOPE_PERSONALITIES[horoscope_sign]
 
     # TODO: Generate a random number from 1 to 99
-    lucky_number = 0
+    lucky_number = random.randint(1, 99)
 
     context = {
         'horoscope_sign': horoscope_sign,
         'personality': users_personality,
-        'lucky_number': lucky_number
+        'lucky_number': lucky_number,
+        'users_name': users_name,
     }
 
     return render_template('horoscope_results.html', **context)
