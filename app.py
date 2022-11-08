@@ -26,7 +26,7 @@ def choose_froyo():
         What toppings would you like to add? <br>
         <input type='text' name='toppings'> <br>
         <input type='submit' value='Submit!'>
-    </form>
+    </form> 
     """
 
 
